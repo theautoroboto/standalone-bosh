@@ -1,0 +1,36 @@
+builds:
+  0efe6b91-9129-4e02-6abe-3b4e5b7a0aa2:
+    version: 5.4.0
+  3795925e-48a6-4bed-bc36-4421a3524390:
+    version: "1"
+  499e285a-8b69-4468-4d53-a76bc70c9cb8:
+    version: 5.2.5
+  52178a40-11bf-47bf-4abc-a596ff55c8b4:
+    version: 5.4.1
+  52f7eab3-9e66-4f49-57a1-86c271de2d73:
+    version: 5.2.0
+  5c71e1c2-ea64-419e-62fd-b6c7ddb7245d:
+    version: 5.1.0
+  67d33bd2-20c2-4acb-7d4e-1e09aa22fe14:
+    version: 5.2.4
+  76767b07-fe9c-4703-755b-5151f2cfffd5:
+    version: 5.0.1
+  7b16907e-4d37-4f03-5c6d-3c537418c9a1:
+    version: 5.3.0
+  7b720641-8da7-4846-8b7d-e75623eea81d:
+    version: "4"
+  87fefd44-67ea-4d3f-5f7b-d1ddd289d27d:
+    version: 5.0.0
+  8f3444d3-3601-46e8-734d-241ae556b36a:
+    version: 5.2.1
+  ace3226f-5d22-4268-9282-4585d5af4f04:
+    version: "2"
+  b8e5c67b-fa71-417b-b7e5-fc45c6f12c40:
+    version: "3"
+  d9c50210-3d7b-4265-4636-ee4526baccc7:
+    version: 5.2.3
+  dcef8927-ca31-48a0-4eb3-f4073ae01d34:
+    version: 5.5.0
+  eb05c07f-e3da-4f68-79e5-ce4ce8a84e0c:
+    version: 5.2.2
+format-version: "2"

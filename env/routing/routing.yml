@@ -1,0 +1,216 @@
+---
+addons:
+- name: bpm
+  include:
+    stemcell:
+    - os: ubuntu-xenial
+  jobs:
+  - name: bpm
+    release: bpm
+name: routing
+releases:
+- name: bpm
+  sha1: 0cb8df003354df69122d735b7407e5713a86e2b3
+  url: https://s3.amazonaws.com/bosh-compiled-release-tarballs/bpm-1.1.5-ubuntu-xenial-621.23-20191118-181834-035288102-20191118181842.tgz
+  version: 1.1.5
+- name: routing
+  version: latest
+- name: nats
+  version: latest
+- name: haproxy
+  version: latest
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+update:
+  serial: true
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 1000-40000
+  update_watch_time: 1000-40000
+
+instance_groups:
+- name: nats-server
+  azs: ((azs))
+  instances: 3
+  jobs:
+  - name: bpm
+    release: bpm
+  - name: nats
+    provides:
+      nats:
+        as: nats
+        shared: true
+    release: nats
+    properties:
+      nats:
+        password: "((nats-password))"
+        user: "nats"
+        port: 4222
+        debug: true
+        machines: ((nats_ips))
+  networks:
+  - name: default
+    static_ips: ((nats_ips))
+  vm_type: default
+  stemcell: default
+
+
+# - name: tcp_router
+#   properties:
+#     skip_ssl_validation: true
+
+
+- name: gorouter
+  azs: ((azs))
+  instances: 3
+  jobs:
+  - name: bpm
+    release: bpm
+  - name: gorouter
+    release: routing
+    properties:
+      request_timeout_in_seconds: 900
+      consumes:
+        nats:
+          from: routing
+      uaa:
+        clients:
+          gorouter:
+            secret: ((gorouter_password))
+        ssl:
+          port: 8443
+      router:
+        ca_certs: |
+          ((trusted_cert_list))
+        forwarded_client_cert: always_forward
+        disable_http: false
+        enable_ssl: true
+        status:
+          password: ((router_status_password))
+          user: router-status
+          port: 8080
+        route_services_secret: ((router_route_services_secret))
+        port: 80
+        ssl_skip_validation: true
+        logging_level: debug
+        tracing:
+          enable_zipkin: true
+        write_access_logs_locally: true
+        tls_pem: 
+        - cert_chain: |
+            ((/certs/wildcard.certificate))
+          private_key: ((/certs/wildcard.private_key))
+  networks:
+  - name: default
+    static_ips: ((gorouters_ips))
+  vm_type: default
+  stemcell: default
+
+- name: ha_proxy
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: haproxy
+    release: haproxy
+    properties:
+      ha_proxy:
+        backend_http_health_port: 8080
+        buffer_size_bytes: 16384
+        client_cert: false
+        client_timeout: 900
+        client_cert_ignore_err: all
+        disable_http: false
+        disable_tls_10: true
+        disable_tls_11: true
+        enable_health_check_http: true
+        hsts_enable: false
+        hsts_include_subdomains: false
+        hsts_max_age: 0
+        hsts_preload: false
+        internal_only_domains: []
+        keepalive_timeout: 900
+        server_timeout: 900
+        ssl_ciphers: DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384
+        stats_enable: true
+        stats_user: stats
+        stats_password: ((router_stats_password))
+        backend_port: 80
+        backend_servers: ((gorouters_ips))
+        https_redirect_all: true
+        log_level: debug
+        tcp_link_port: 2222
+        ssl_pem: |+
+          ((/certs/wildcard.private_key))
+          ((/certs/wildcard.certificate))
+    release: haproxy
+  lifecycle: service
+  vm_type: default
+  stemcell: default
+  update:
+    max_in_flight: 1
+  networks: 
+    - name: default
+      static_ips: ((haproxy_ip))
+
+# - name: tcp-router
+#   azs:
+#   - z1
+#   - z2
+#   instances: 2
+#   vm_type: minimal
+#   stemcell: default
+#   vm_extensions:
+#   - cf-tcp-router-network-properties
+#   networks:
+#   - name: default
+#   jobs:
+#   - name: tcp_router
+#     release: routing
+#     properties:
+#       tcp_router:
+#         oauth_secret: "((/uaa_clients_tcp_router_secret))"
+#         router_group: default-tcp
+#       uaa:
+#         ca_cert: "((uaa_ca.certificate))"
+#         tls_port: 8443
+
+- name: nats-smoke-tests
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: smoke-tests
+    release: nats
+  lifecycle: errand
+  networks:
+  - name: default
+  stemcell: default
+  vm_type: default
+
+variables:
+- name: /certs/default_ca
+  type: certificate
+  options:
+    is_ca: true
+    common_name: ca
+    duration: 3650
+- name: /certs/wildcard
+  type: certificate
+  options:
+    ca: /certs/default_ca
+    common_name: ((SSL_cn))
+    alternative_names: ((SSL_alt_names))
+    duration: 1825
+- name: router_status_password
+  type: password
+- name: router_route_services_secret
+  type: password
+- name: router_stats_password
+  type: password
+- name: nats-password
+  type: password
+- name: gorouter_password
+  type: password
+# - name: /uaa_clients_tcp_router_secret
+#   type: password

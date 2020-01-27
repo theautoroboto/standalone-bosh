@@ -1,0 +1,62 @@
+
+RUN_USER = git
+RUN_MODE = prod
+
+[repository]
+ROOT = /var/vcap/store/gogs/repositories
+SCRIPT_TYPE = bash
+
+[server]
+PROTOCOL= <%= p("gogs.protocol") %>
+DOMAIN = <%= p("gogs.domain", spec.address) %>
+HTTP_PORT = <%= p("gogs.port") %>
+
+<% db = p("databases.databases").find { |db| db["tag"] == "gogs" } %>
+<% db_role = p("databases.roles").find { |role| role["tag"] == "gogs" } %>
+ROOT_URL = <%= p("gogs.protocol")%>://<%= p("gogs.domain", spec.address)%>
+DISABLE_SSH = false
+SSH_PORT = <%= p("gogs.ssh_port") %>
+SSH_ROOT_PATH = /var/vcap/store/gogs/home/.ssh
+START_SSH_SERVER = <%= p("gogs.start_ssh_server") %>
+OFFLINE_MODE = false
+<% if_p("gogs.tls_cert") do %>
+CERT_FILE=/var/vcap/jobs/gogs/config/gogs.crt
+<% end -%>
+<% if_p("gogs.tls_key") do %>
+KEY_FILE=/var/vcap/jobs/gogs/config/gogs.key
+<% end -%>
+
+[database]
+DB_TYPE = <%= p("databases.type") %>
+HOST = <%= p("databases.address") %>:<%= p("databases.port") %>
+NAME = <%= db["name"] %>
+USER = <%= db_role["name"] %>
+PASSWD = `<%= db_role["password"] %>`
+SSL_MODE = disable
+
+[session]
+PROVIDER = file
+PROVIDER_CONFIG = /var/vcap/store/gogs/sessions
+
+[picture]
+AVATAR_UPLOAD_PATH = /var/vcap/store/gogs/avatars
+
+
+[attachment]
+PATH = /var/vcap/store/gogs/data/attachments
+
+[service]
+REGISTER_EMAIL_CONFIRM = false
+ENABLE_NOTIFY_MAIL     = true
+DISABLE_REGISTRATION   = false
+ENABLE_CAPTCHA         = false
+REQUIRE_SIGNIN_VIEW    = false
+
+[log]
+MODE      = file
+LEVEL     = Info
+ROOT_PATH = /var/vcap/packages/gogs/log
+
+[security]
+INSTALL_LOCK = true
+SECRET_KEY = <%= p("gogs.secret_key") %>

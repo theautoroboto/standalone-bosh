@@ -1,0 +1,92 @@
+---
+name: harbor-deployment
+
+releases:
+# - name: harbor-container-registry
+#   version: 1.6.2
+#   sha1: 5bb63d9b1cac2ae24e601d28c057af7dcb3abe8b
+#   url: https://storage.googleapis.com/harbor-bosh-releases/harbor-container-registry-1.6.2.tgz
+# - name: "harbor-container-registry"
+#   version: "1.5.0"
+#   url: "https://bosh.io/d/github.com/vmware/harbor-boshrelease?v=1.5.0"
+#   sha1: "e9fc4449d4289d8f5e8e1fc290d1e25b88a61221"
+- name: harbor-container-registry
+  version: 1.7.5-build.9
+  sha1: 54b1c4377fac4f0cd3902fb89e53050fe1a34789
+  url: https://storage.googleapis.com/harbor-bosh-releases/harbor-bosh-1.7.5.tgz
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+instance_groups:
+- name: harbor-app
+  azs: ((azs))
+  instances: 1
+  jobs:
+  - name: harbor
+    release: harbor-container-registry
+    properties:
+      db:
+        host: ((mySQL_proxy_ip))
+        port: 3306
+        user: harbor
+      email:
+        from: ((smtp_from))
+        insecure: true
+        server: ((smtp_server))
+      http_proxy: ((http_proxy_url))
+      https_proxy: ((http_proxy_url))
+      no_proxy: 127.0.0.1,localhost,ui,registry
+      ldap:
+        basedn: ((ldap_user_search_base_dn))
+        #filter: samAccountName={0}
+        group_basedn: ((ldap_group_search_base_dns))
+        searchdn: ((ldap_user_dn))
+        searchpwd: ((/ldap_user.password))
+        uid: sAMAccountName
+        url: ldap://((ldap_host))
+        verify_cert: false
+      hostname: harbor.((system_domain))
+      db_password: ((/database/harbor_db_password))
+      admin_password: ((harbor_admin_password))
+      auth_mode: ldap_auth
+      clair_db_password: ((clair_db_password))
+      with_clair: true
+      clair_updater_interval: 24
+      with_notary: true
+      ssl:
+        cert: ((/certs/wildcard.certificate))
+        key: ((/certs/wildcard.private_key))
+        ca: ((/certs/default_ca.certificate))
+  - name: docker
+    release: harbor-container-registry
+  # this is an errand job
+  - name: smoke-test
+    release: harbor-container-registry
+    properties: {}
+    consumes:
+      harbor_reference: {from: harbor}
+  stemcell: default
+  vm_resources:
+    cpu: 2
+    ram: 2048
+    ephemeral_disk_size: 10240
+  persistent_disk: 20480
+  networks:
+  - name: default
+    static_ips:
+    - 10.14.168.65
+
+update:
+  canaries: 2
+  max_in_flight: 1
+  canary_watch_time: 30000-300000
+  update_watch_time: 30000-300000
+
+variables:
+- name: harbor_admin_password
+  type: password
+- name: clair_db_password
+  type: password

@@ -1,0 +1,7 @@
+---
+- type: replace
+  path: /releases/name=gogs
+  value:
+    name: gogs
+    version: create
+    url: file://.

@@ -1,0 +1,30 @@
+---
+- type: replace
+  path: /properties/authentication?/-
+  value:
+    type:
+      name: LDAP
+      id: 101
+      type: ldap_bind_dn
+      is_activated: true
+      is_default: true
+    config:
+      host: ((ldap_host))
+      port: 389
+      security_protocol: 0
+      skip_verify: true
+      bind_dn: ((ldap_bind_dn))
+      bind_password: ((/ldap_user.password))
+      user_base: ((ldap_user_search_base_dn))
+      attribute_username: uid
+      attribute_name: givenName
+      attribute_surname: sn
+      attribute_mail: mail
+      attributes_in_bind:
+      filter: (&(objectClass=user)(|(sAMAccountName=%s)(userPrincipalName=%s)))
+      admin_filter: (memberOf=CN=PCF-Admins,OU=Groups,DC=xyz,DC=com)
+      group_enabled: false
+      group_dn:
+      group_filter:
+      group_member_uid:
+      user_uid:

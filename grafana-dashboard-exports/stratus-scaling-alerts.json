@@ -1,0 +1,2038 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 15,
+  "links": [],
+  "panels": [
+    {
+      "dashboardFilter": "",
+      "dashboardTags": [],
+      "folderId": null,
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 44,
+      "limit": 10,
+      "links": [],
+      "nameFilter": "",
+      "onlyAlertsOnDashboard": false,
+      "show": "current",
+      "sortOrder": 1,
+      "stateFilter": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Alert List",
+      "type": "alertlist"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 34,
+      "panels": [
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0.2
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "message": "",
+            "name": "Diego Cells - Total Memory Available % alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "Percentage of remaining memory capacity for a given cell.\n\nWhen to scale:\nTotal memory available should be greater than 10-20% otherwise scale up",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 15
+          },
+          "id": 2,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_memory_capacity_5_m{bosh_deployment=\"cf\"}",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "Fog - cf",
+              "refId": "A"
+            },
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_memory_capacity_5_m{bosh_deployment=~\"p-isolation-segment.*\"}",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 1,
+              "legendFormat": "Fog - p-isolation-segment",
+              "refId": "B"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_job_name=\"windows_diego_cell\"})/avg(firehose_value_metric_rep_capacity_total_memory{bosh_job_name=\"windows_diego_cell\"})",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "Fog - windows",
+              "refId": "C"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_job_name=\"windows_diego_cell_lab_wrt\"})/avg(firehose_value_metric_rep_capacity_total_memory{bosh_job_name=\"windows_diego_cell_lab_wrt\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - windows lab",
+              "refId": "D"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_job_name=\"windows_diego_cell_frms_lab\"})/avg(firehose_value_metric_rep_capacity_total_memory{bosh_job_name=\"windows_diego_cell_frms_lab\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - windows frms",
+              "refId": "E"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_memory_capacity_5_m{bosh_deployment=\"cf\"}",
+              "format": "time_series",
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - cf",
+              "refId": "F"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_memory_capacity_5_m{bosh_deployment=~\"p-isolation-segment.*\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - p-isolation-segment",
+              "refId": "G"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_memory{bosh_job_name=\"windows_diego_cell\"})/avg(firehose_value_metric_rep_capacity_total_memory{bosh_job_name=\"windows_diego_cell\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - windows",
+              "refId": "H"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "lt",
+              "value": 0.2
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Diego Cells - Total Memory Available %",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percentunit",
+              "label": "percentage available",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0.2
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "Diego Cells - Total Disk Available % alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "Percentage of remaining disk capacity for a given cell.\n\nWhen to scale:\nTotal disk available should be greater than 10-20% otherwise scale up",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 15
+          },
+          "id": 4,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_disk_capacity_5_m{bosh_deployment=\"cf\"}",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "Fog - cf",
+              "refId": "A"
+            },
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_disk_capacity_5_m{bosh_deployment=~\"p-isolation-segment.*\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - p-isolation-segment",
+              "refId": "B"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_job_name=\"windows_diego_cell\"})/avg(firehose_value_metric_rep_capacity_total_disk{bosh_job_name=\"windows_diego_cell\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - windows",
+              "refId": "C"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_job_name=\"windows_diego_cell_lab_wrt\"})/avg(firehose_value_metric_rep_capacity_total_disk{bosh_job_name=\"windows_diego_cell_lab_wrt\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - windows lab",
+              "refId": "D"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_job_name=\"windows_diego_cell_frms_lab\"})/avg(firehose_value_metric_rep_capacity_total_disk{bosh_job_name=\"windows_diego_cell_frms_lab\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - windows frms",
+              "refId": "E"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_disk_capacity_5_m{bosh_deployment=\"cf\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - cf",
+              "refId": "F"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_disk_capacity_5_m{bosh_deployment=~\"p-isolation-segment.*\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - p-isolation-segment",
+              "refId": "G"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_disk{bosh_job_name=\"windows_diego_cell\"})/avg(firehose_value_metric_rep_capacity_total_disk{bosh_job_name=\"windows_diego_cell\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - windows",
+              "refId": "H"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "lt",
+              "value": 0.2
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Diego Cells - Total Disk Available %",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percentunit",
+              "label": "percentage available",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    0.2
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "Diego Cells - Total Container Capacity Available % alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "Percentage of remaining container capacity for a given cell (regards to the number of containers a cell can host)\n\nWhen to scale:\nTotal container capacity available should be greater than 10-20% otherwise scale up",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 15
+          },
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_container_capacity_5_m{bosh_deployment=\"cf\"}",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "Fog - cf",
+              "refId": "A"
+            },
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_container_capacity_5_m{bosh_deployment=~\"p-isolation-segment.*\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - p-isolation-segment",
+              "refId": "B"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_job_name=\"windows_diego_cell\"})/avg(firehose_value_metric_rep_capacity_total_containers{bosh_job_name=\"windows_diego_cell\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "windows",
+              "refId": "C"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_job_name=\"windows_diego_cell_lab_wrt\"})/avg(firehose_value_metric_rep_capacity_total_containers{bosh_job_name=\"windows_diego_cell_lab_wrt\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - windows lab",
+              "refId": "D"
+            },
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_job_name=\"windows_diego_cell_frms_lab\"})/avg(firehose_value_metric_rep_capacity_total_containers{bosh_job_name=\"windows_diego_cell_frms_lab\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - windows frms",
+              "refId": "E"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_container_capacity_5_m{bosh_deployment=\"cf\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - cf",
+              "refId": "F"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_diego_total_percentage_available_container_capacity_5_m{bosh_deployment=~\"p-isolation-segment.*\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - p-isolation-segment",
+              "refId": "G"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "avg(firehose_value_metric_rep_capacity_remaining_containers{bosh_job_name=\"windows_diego_cell\"})/avg(firehose_value_metric_rep_capacity_total_containers{bosh_job_name=\"windows_diego_cell\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - windows",
+              "refId": "H"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "lt",
+              "value": 0.2
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Diego Cells - Total Container Capacity Available %",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percentunit",
+              "label": "percentage available",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Diego Cells",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 36,
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "Total number of messages (envelopes) coming into the doppler servers",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 16
+          },
+          "id": 12,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_ingestor_ingested",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Number of Messages Per Min",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_ingestor_ingested",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Number of Messages Per Min",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Firehose - Total Doppler Ingress",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "none",
+              "label": "(in thousands)",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1000000
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "Firehose - Doppler Message Rate  alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "Represents the average rate of envelopes (messages) per Doppler instance. \n\nWhen to scale:\nAverage load on the Doppler instances should be <16,000 envelopes per second, or 1 million envelopes per minute.  Scale up Doppler when this threshold is reached.",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 16
+          },
+          "id": 10,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_doppler_messages_average_1_m",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Avg Number of Doppler Messages",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_doppler_messages_average_1_m",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Avg Number of Doppler Messages",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1000000
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Firehose - Doppler Message Rate ",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "per minute",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "Metrics and logs enter the Firehose for transport and exit out of the platform through a consumer nozzle. If the consuming downstream system fails to keep up with the exiting stream of metrics, the Firehose is forced to close the connection to protect itself from back-pressure. The Firehose increments slow_consumer with each connection that it closes because a consumer could not keep up. This represents the change in number of drops.\n\nWhen to scale:\nScale when the rate of Firehose Slow Consumer Drops is irregular for a given environment.",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 16
+          },
+          "id": 20,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_counter_event_loggregator_trafficcontroller_doppler_proxy_slow_consumer_delta",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Firehose ",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_counter_event_loggregator_trafficcontroller_doppler_proxy_slow_consumer_delta",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Firehose ",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Firehose - Slow Consumer Drops Delta",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "Firehose - Dropped Messages alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "The loss rate occurring as messages are transported from the Loggregator Agent components through the Doppler components to the Firehose endpoints.\n\nWhen to scale:\nShould be less than 1%. Scale up the number of Traffic Controllers and Doppler instances when threshold is reached.",
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 24
+          },
+          "id": 8,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_firehose_loss_rate_1_m",
+              "format": "time_series",
+              "hide": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Firehose Loss Rate Per Min",
+              "refId": "A"
+            },
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_firehose_loss_rate_1_h",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Firehose Loss Rate Per Hour",
+              "refId": "B"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_firehose_loss_rate_1_m",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Firehose Loss Rate Per Min",
+              "refId": "C"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_firehose_loss_rate_1_h",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Firehose Loss Rate Per Hour",
+              "refId": "D"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Firehose - Dropped Messages",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "percentage dropped",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "Firehose - Adatper Loss Rate alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "The loss rate of the Syslog Adapters, that is, the total messages dropped as a percentage of the total traffic coming through the Syslog Adapters. Total messages include only logs for bound applications. \n\nWhen to scale:\nShould be less than 1% otherwise performance test your syslog server, review the logs of the syslog consuming system for intake and other performance issues that indicate a need to scale the consuming system. ",
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 24
+          },
+          "id": 30,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_syslog_drain_adapter_loss_rate_1_m",
+              "format": "time_series",
+              "hide": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Firehose Syslog Loss Rate Per Min",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_syslog_drain_adapter_loss_rate_1_m",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Firehose Syslog Loss Rate Per Min",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Firehose - Adatper Loss Rate",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "percentage dropped",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Firehose",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 38,
+      "panels": [
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    900
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "Reverse Log Proxy - Avg Subscriptions alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "The Reverse Log Proxy (RLP) limits the number of subscriptions. A subscription is a consumer of the RLP so this metric concerns the number of concurrent consumer of an RLP instance. The maximum subscription count is 1000 per RLP.\n\nWhen to scale:\nWhen the number of subscriptions reaches or crosses, scale up the number of traffic controllers",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 17
+          },
+          "id": 28,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "avg(firehose_value_metric_loggregator_doppler_subscriptions)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Average Number of Subscriptions",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "avg(firehose_value_metric_loggregator_doppler_subscriptions)",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Average Number of Subscriptions",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 900
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Reverse Log Proxy - Avg Subscriptions",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    1
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "Reverse Log Proxy Loss Rate alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "The loss rate of the reverse log proxies (RLP), that is, the total messages dropped as a percentage of the total traffic coming through the reverse log proxy. Total messages include only logs for bound applications. \n\nWhen to scale:\nShould be less than 1%. Scale up the number of traffic controllers when this threshold is reached",
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 17
+          },
+          "id": 32,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "firehose_value_metric_healthwatch_syslog_drain_rlp_loss_rate_1_m",
+              "format": "time_series",
+              "hide": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Firehose Syslog Loss Rate Per Min",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "firehose_value_metric_healthwatch_syslog_drain_rlp_loss_rate_1_m",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Firehose Syslog Loss Rate Per Min",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 1
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Reverse Log Proxy Loss Rate",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "percentage dropped",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Reverse Log Proxy",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 40,
+      "panels": [
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    65
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "Routing - VM CPU Utilization alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "CPU utilization for each Gorouter\n\nWhen to scale:\nCPU usage should be within a maximum range of 60-70% for the best Gorouter performance. \n",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 18
+          },
+          "id": 14,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "bosh_job_cpu_user{bosh_deployment=~\"cf.*\",bosh_job_name=\"router\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Router VM",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "bosh_job_cpu_user{bosh_deployment=~\"cf.*\",bosh_job_name=\"router\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Router VM",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 65
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Routing - VM CPU Utilization",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "cpu (user) usage",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    65
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "UAA - VM CPU Utilization alert",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "CPU utilization for each UAA vm\n\nWhen to scale:\nCPU usage should be within a maximum range of 80-90% for the best UAA performance. . ",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 18
+          },
+          "id": 16,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "bosh_job_cpu_user{bosh_deployment=~\"cf.*\",bosh_job_name=\"uaa\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - UAA VM",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "bosh_job_cpu_user{bosh_deployment=~\"cf.*\",bosh_job_name=\"uaa\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - UAA VM",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 65
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "UAA - VM CPU Utilization",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "cpu (user) usage",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Routers and UAA",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 42,
+      "panels": [
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    75
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "last"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "keep_state",
+            "for": "5m",
+            "frequency": "1m",
+            "handler": 1,
+            "name": "NFS - Persistent Disk Usage % alert",
+            "noDataState": "keep_state",
+            "notifications": []
+          },
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "-- Mixed --",
+          "description": "PAS internal NFS Server persistent disk usage \n\nWhen to scale:\nTotal usage should be below 75%",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 19
+          },
+          "id": 18,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": "fog",
+              "expr": "bosh_job_persistent_disk_percent{bosh_deployment=~\"cf.*\",bosh_job_name=\"nfs_server\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Fog - Disk Usage",
+              "refId": "A"
+            },
+            {
+              "datasource": "sandbox",
+              "expr": "bosh_job_persistent_disk_percent{bosh_deployment=~\"cf.*\",bosh_job_name=\"nfs_server\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "Sandbox - Disk Usage",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 75
+            }
+          ],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "NFS - Persistent Disk Usage %",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "percent used",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "NFS",
+      "type": "row"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 18,
+  "style": "dark",
+  "tags": [
+    "admins"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Scaling Alerts",
+  "uid": "fjK49QzWq",
+  "version": 23
+}

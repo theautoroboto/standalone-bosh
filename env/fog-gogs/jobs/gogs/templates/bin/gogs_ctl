@@ -1,0 +1,95 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the gogs_ctl script
+source /var/vcap/jobs/gogs/helpers/ctl_setup.sh 'gogs'
+echo $PATH
+
+export PORT=${PORT:-5000}
+export LANG=en_US.UTF-8
+export PACKAGE_DIR=/var/vcap/packages/gogs
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    # store pid in $PIDFILE
+    echo $$ > $PIDFILE
+
+    mkdir -p ${STORE_DIR}/{home,repositories,avatars,attachments,sessions,config,tmp}
+
+    # Remove any old authentication configs that may have been deployed previously
+    # This lives in the package directory as "gogs web" is run in here and
+    # the custom path is based on workdir in gogs codebase
+    mkdir -p ${PACKAGE_DIR}/custom/conf/auth.d
+    rm -rf ${PACKAGE_DIR}/custom/conf/auth.d/*.conf
+
+    # Generate new configuration files into the appropriate locations
+    # It uses key=value pairs that match exactly what is defined in the gogs authentication examples
+<%- if_p('authentication') do |auths| -%>
+  <%- auths.each do |auth| -%>
+    <%- types = auth.fetch('type', []) %>
+cat << EOF > ${PACKAGE_DIR}/custom/conf/auth.d/<%= types['id'] %>.conf
+    <%- types.each_pair do |k, v| -%>
+<%= "#{k} = #{v}" %>
+    <%- end -%>
+[config]
+    <%- configs = auth.fetch('config', []) %>
+    <%- configs.each_pair do |k, v| -%>
+<%= "#{k} = #{v}" %>
+    <%- end -%>
+EOF
+  <%- end -%>
+<%- end -%>
+
+    if id git >/dev/null 2>&1; then
+      echo "user git exists"
+    else
+      useradd -d ${STORE_DIR}/home -g vcap -G bosh_sshers git
+    fi
+    chown -R git:vcap ${STORE_DIR}
+
+    cp -f ${JOB_DIR}/config/app.ini ${STORE_DIR}/config/app.ini && chown git:vcap ${STORE_DIR}/config/app.ini
+
+    if [ ! -f "${STORE_DIR}/home/.bashrc" ]; then
+      echo "export PATH=/var/vcap/packages/git/bin:$PATH" >> ${STORE_DIR}/home/.bashrc
+    fi
+
+    if ! grep -q "^AuthorizedKeysFile %h/.ssh/authorized_keys" /etc/ssh/sshd_config; then
+      echo "AuthorizedKeysFile %h/.ssh/authorized_keys" >> /etc/ssh/sshd_config
+    fi
+
+    # Put git in /usr/bin so ssh can use
+    if [ ! -f "/usr/bin/git" ]; then
+      cp /var/vcap/packages/git/bin/* /usr/bin/
+    fi
+
+    cd ${PACKAGE_DIR}
+    chown -R git:vcap .
+    # Use setcap if gogs web required listen port <1024
+    listen_port=<%= p("gogs.port") %>
+    if [ $listen_port -lt 1024 ]; then
+      setcap 'cap_net_bind_service=+ep' ${PACKAGE_DIR}/gogs
+    fi
+    exec chpst -u git:vcap -e ${JOB_DIR}/env \
+         ${PACKAGE_DIR}/gogs web \
+         --config ${STORE_DIR}/config/app.ini \
+         >>$LOG_DIR/$JOB_NAME.stdout.log \
+         2>>$LOG_DIR/$JOB_NAME.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: gogs_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

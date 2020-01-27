@@ -1,0 +1,112 @@
+---
+name: gogs
+packages:
+  - gogs
+  - git
+templates:
+  bin/monit_debugger: bin/monit_debugger
+  bin/gogs_ctl: bin/gogs_ctl
+  config/app.ini.erb: config/app.ini
+  config/gogs.crt.erb: config/gogs.crt
+  config/gogs.key.erb: config/gogs.key
+  env/USER: env/USER
+  env/PATH: env/PATH
+  env/HOME: env/HOME
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  bbr/backup.sh.erb: bin/bbr/backup
+  bbr/restore.sh.erb: bin/bbr/restore
+properties:
+  gogs.domain:
+    description: "Domain name of your server. Defaults to current IP."
+    example: 'git.example.com'
+  gogs.port:
+    description: "Port that gogs listen on"
+    default: '8080'
+  gogs.protocol:
+    descripton: "http or https for gogs web"
+    default: 'http'
+  gogs.ssh_port:
+    description: "Port for Gogs SSH"
+    default: '2222'
+  gogs.start_ssh_server:
+    description: "Start SSH Server"
+    default: "true"
+  gogs.secret_key:
+    description: "Global secret key for your server security"
+  gogs.tls_cert:
+    description: "Certificat TLS for gogs web"
+  gogs.tls_key:
+    description: "Private key TLS for gogs web"
+
+  databases.type:
+    description: "The database type you choose, either mysql, postgres, mssql or sqlite3."
+    default: postgres
+  databases.port:
+    description: "The database port"
+    default: 5432
+  databases.address:
+    description: "The database address"
+    default: '127.0.0.1'
+  databases.databases:
+    description: "A list of databases and associated properties to create"
+    default: []
+    example:
+      databases: |
+        - name: gogs
+          citext: true
+          tag: gogs
+  databases.roles:
+    description: "A list of database roles and associated properties to create"
+    default: []
+    example:
+      roles: |
+        - name: gogs
+          password: MyGogsPassword
+          tag: gogs
+
+  authentication:
+    description: "A list of authentication backends to add"
+    optional: true
+    example:
+      authentication: |
+        - type:
+            name: LDAP
+            id: 101
+            type: ldap_bind_dn
+            is_activated: true
+            is_default: true
+          config:
+            host: 10.244.0.100
+            port: 389
+            security_protocol: 0
+            skip_verify: true
+            bind_dn: cn=binduser,dc=example,dc=org
+            bind_password: bindpassword
+            user_base: dc=example,dc=org
+            attribute_username: uid
+            attribute_name: givenName
+            attribute_surname: sn
+            attribute_mail: mail
+            attributes_in_bind:
+            filter: (&(objectClass=inetOrgPerson)(|(uid=%s)(mail=%s)))
+            admin_filter:
+            group_enabled: false
+            group_dn:
+            group_filter:
+            group_member_uid:
+            user_uid:
+        - type:
+            name: GMail
+            id: 102
+            type: smtp
+            is_activated: true
+            is_default: false
+          config:
+            auth: PLAIN
+            host: smtp.gmail.com
+            port: 587
+            allowed_domains:
+            tls: true
+            skip_verify: false

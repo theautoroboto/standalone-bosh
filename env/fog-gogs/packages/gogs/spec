@@ -1,0 +1,5 @@
+---
+name: gogs
+dependencies:
+files:
+- gogs/gogs_linux_amd64_*.tar.gz
