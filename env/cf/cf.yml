@@ -595,7 +595,7 @@ instance_groups:
       uaa:
         ldap:
           emailDomain:
-          - fiserv.com
+          - xyz.com
           enabled: true
           groups:
             groupSearchFilter: member={0}
