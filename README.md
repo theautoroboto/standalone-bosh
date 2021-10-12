@@ -28,3 +28,6 @@ This solution requires manual definitions of variables, but is otherwise complet
 | Full BOSH Network        | Proxy Server             | 8080 |                     Web Proxy Access |
 | Full BOSH Network        | SMTP Server              |  25  |                                Email |
 | Director IP              | vCenter                  |  443 |                  Resource management |
+
+# Result
+![](images/bosh_generic.jpg)
